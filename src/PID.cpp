@@ -11,15 +11,24 @@ PID::PID() {}
 PID::~PID() {}
 
 void PID::Init(double Kp, double Ki, double Kd) {
-  this.Kp=Kp;
-  this.Ki=Ki;
-  this.Kd=Kd;
+  this->Kp=Kp;
+  this->Ki=Ki;
+  this->Kd=Kd;
+
+  p_error = 0;
+  i_error = 0;
+  d_error = 0;
+  init = false;
 }
 
 void PID::UpdateError(double cte) {
+  if (init==false){
+     p_error = cte;
+     init = true;
+  }
+  d_error = cte - p_error;
   p_error = cte;
   i_error += cte;
-  d_error = cte - p_error;
 #if 0
 def run(robot, tau_p, tau_d, tau_i, n=100, speed=1.0):
     x_trajectory = []
